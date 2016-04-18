@@ -2,8 +2,10 @@ var dbUser = require('../models/user.model');
 
 var userService = {};
 
+// create a user in the database
 userService.create = function(userDetails, err, next) {
 
+	// create the user model from the user details
 	var userToCreate = new dbUser({
 		email: userDetails.email,
 		forename: userDetails.forename,
@@ -11,6 +13,7 @@ userService.create = function(userDetails, err, next) {
 		created: new Date()
 	});
 
+	// commit the user model to the database
 	userToCreate.save(function(saveErr, createdUser) {
 
 		if (saveErr) {
@@ -22,8 +25,10 @@ userService.create = function(userDetails, err, next) {
 	});
 };
 
+// read a user from the database
 userService.read = function(userId, err, next) {
 
+	// retrieve the user model from the database, using the id to uniquely identify
 	dbUser.findOne({'_id': userId}, function(readErr, userRead) {
 
 		if (readErr) {
@@ -40,14 +45,18 @@ userService.read = function(userId, err, next) {
 	});
 };
 
+// update an existing user in the database
 userService.update = function(user, err, next) {
 
+	// retrieve the user model from the database, using the id to uniquely identify
 	userService.read(user.id, err, function(existingUser) {
 
+		// update the user details
 		existingUser.email = user.email;
 		existingUser.forename = user.forename;
 		existingUser.surname = user.surname;
 
+		// save the user model with new details
 		existingUser.save(function(updateErr){
 			if (updateErr){
 				err(updateErr);
@@ -59,8 +68,10 @@ userService.update = function(user, err, next) {
 	});
 };
 
+// delete an existing user from the database
 userService.delete = function(userId, err, next) {
 
+	// remove the user model from the database, using the id to uniquely identify
 	dbUser.remove({'_id': userId}, function(deleteErr) {
 
 		if (deleteErr){
