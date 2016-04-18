@@ -1,6 +1,5 @@
 var express = require('express');
 var bodyParser = require('body-parser')
-var expressValidator = require('express-validator');
 var mongoose = require('mongoose');
 var config = require('./config');
 var apiController = require('./controllers/user.controller');
